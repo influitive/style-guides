@@ -97,45 +97,57 @@ template-names-like-this.handlebars
 
 #### Indentation
 
-Use 4-space indenting for all code. Do not use tabs.
+Use 2-space indenting for all code. Do not use tabs.
 
 Extra indentation should be used to clearly distinguish multiline
-conditionals from the following block of code (similar to the PEP8
-rule for Python code).
+conditionals from the following block of code.
 
 No:
 ```js
 if (someReallyLongBooleanVariableIMeanReallyLong &&
-    someOtherBoolean) {
-    return "monkeys";
+  someOtherBoolean) {
+  return "monkeys";
 }
 ```
 
 Yes:
 ```js
 if (someReallyLongBooleanVariableIMeanReallyLong &&
-        someOtherBoolean) {
-    return "monkeys";
+  someOtherBoolean) {
+  return "monkeys";
 }
 ```
 
 #### Braces
 
-Braces should always be used on blocks.
+Braces should be preferred on blocks unless overly verbose. Good places to not use braces are things like guards.
 
-`if/else/for/while/try` should always have braces and always go on
+`if/else/for/while/try` should have braces and always go on
 multiple lines, with the opening brace on the same line.
 
 No:
 ```js
 if (true)
-    blah();
+  blah();
+else
+  bleh();
 ```
 
 Yes:
 ```js
 if (true) {
-    blah();
+  blah();
+} else {
+  bleh();
+}
+```
+
+Ok:
+```js
+function foo() {
+  if (x) return true;
+  if (y) return false;
+  // do other
 }
 ```
 
@@ -143,18 +155,15 @@ if (true) {
 
 ```js
 if (blah) {
-    baz();
+  baz();
 } else {
-    baz2();
+  baz2();
 }
 ```
 
 #### Line length
 
-Lines should not exceed 79 characters.  (This is called the "80
-character rule," leaving 1 character for the newline.)
-
-This is consistent with our Python style guide, which adheres to PEP8.
+Lines should not exceed 120 characters.  It's 2015 and we're not coding on punch cards and terminals anymore.
 
 
 #### `require()` lines.
@@ -162,12 +171,9 @@ This is consistent with our Python style guide, which adheres to PEP8.
 Separate first party and third party `require()` lines, and sort
 `require()` lines.
 
-This is to mirror our [Python import style](python.md#import-style),
-though there are no "system" imports in JavaScript.
-
 "First party" code is anything we wrote whose primary source lives in
-the repository its being used in.  Underscore is third party because
-we didn't write it.  KaTeX is third party in webapp because even
+the repository its being used in.  Lodash is third party because
+we didn't write it.  Patternity is third party in hub because even
 though we wrote it, its primary sources lives in a different
 repository.
 
@@ -204,7 +210,7 @@ var cookieStoreRenderer = require("../shared-package/cookie-store.handlebars");
 
 Object destructuring should go after all require lines.
 
-Write requires on a single line, even if they extend past 80 chars, so they are easier to sort. Our linter automatically skips require lines when checking line length.
+Write requires on a single line, even if they extend past 120 chars, so they are easier to sort. The linter will ignore these lines.
 
 No:
 ```js
@@ -374,8 +380,8 @@ rule for consistency with arrays.  Plus, `{}` is more readable.
 No:
 ```js
 var a = "foo",
-    b = a + "bar",
-    c = fn(a, b);
+  b = a + "bar",
+  c = fn(a, b);
 ```
 
 Yes:
@@ -415,15 +421,10 @@ Yes:
 
 #### Use modules, not global variables
 
-In most of our major JavaScript repositories (webapp, perseus,
-khan-exerises), we use some form of module system like
-[RequireJS](http://requirejs.org/) or
-[browserify](http://browserify.org/), or in the case of webapp our own
-home built thing that works similarly to browserify.
+We use commonjs and es6 transpiled to commonjs modules in all our apps.
 
-In all of these cases, there are mechanisms for an explicit
-import/export mechanism rather than using global variables to export
-functionality.
+There are mechanisms for an explicit import/export mechanism rather than 
+using global variables to export functionality.
 
 No:
 ```js
@@ -462,6 +463,21 @@ var Jungle = {
 module.exports = Jungle;
 ```
 
+Yes:
+```js
+export function welcome() {
+  // ... 
+}
+
+export function haveFever() {
+  // ...
+}
+
+export default function Jungle() {
+  // ...
+}
+```
+
 You can export multiple objects in one file, but consider if it
 wouldn't be better to split up the file to maintain one export per file.
 
@@ -469,12 +485,11 @@ wouldn't be better to split up the file to maintain one export per file.
 ### ES6/7 rules
 
 Several of our supported browsers support only ES5 natively.  We use
-polyfills to emulate [some -- but not all -- ES6 and ES7 language
-features](https://docs.google.com/spreadsheets/d/12mF99oCpERzLKS07wPPV3GiISUa8bPkKveuHsESDYHU/edit#gid=0)
-so they run on ES5-capable browsers.
+babel to emulate some -- but not all -- ES6 and ES7 language
+features.
 
 In some cases, we do not yet allow a new language feature, if it's
-expensive to polyfill.  In others, we require using the newer language
+expensive to polyfill/transpile.  In others, we require using the newer language
 feature and avoiding the old:
 
 | Construct | Use...                                | ...instead of |
@@ -502,14 +517,9 @@ use rest params like `(...args) => foo(args)`.
 
 `+` is not forbidden, but backticks are encouraged!
 
-#### Do not use ES6 classes for React classes
+#### Use ES6 classes for React classes
 
-Continue to use React's `createClass`, which works with React mixins.
-
-For classes outside of React -- which should actually be pretty rare
--- there is no style rule whether to use ES6 classes or not.
-
-This rule may change once React supports mixins with ES6 classes.
+Prefer Higher Order components over mixins.
 
 #### Do not use `async`/`await` or generators
 
@@ -554,51 +564,9 @@ Yes:
 $(".some-class span").hide();
 ```
 
-#### Don't use Underscore
+#### Use Lodash when it makes sense.
 
-We use ES6/7 which includes many of the features of Underscore.js! Using Underscore should be avoided in favor of these native language features.
+When doing simple operations es5/es6 built ins should be preferred in order to keep bundle size down.
 
-There are a couple of methods that are sufficiently complicated and don't have a direct equivalent so instead we have a [custom-built](https://lodash.com/custom-builds) copy of [lodash](https://lodash.com/) containing only those specific methods. You can find this file at: `third_party/javascript-khansrc/lodash/lodash.js` along with instructions on how to build it and exactly what methods are included.
+However when doing complex operations or working on scripts/serverside code lodash can enable you to write much more performant, readable, and reusable code.
 
-What follows is a method-by-method set of equivalents for what Underscore provides and what you could be using in ES6/7 instead:
-
-Method | Use...                                | ...instead of
---------- | ------------------------------------- | ----------------------
-bind | `fn.bind(someObj, args)` | `_.bind(fn, someObj, args)`
-bind | `(a, b) => { ... }` <sup>[1](#u1)</sup> | `_.bind(function(a, b) { ... }, this)`
-bindAll | `obj.method = obj.method.bind(someObj);` <sup>[2](#u2)</sup> | `_.bindAll(someObj, "method")`
-clone | No alternative at the moment! <sup>[3](#u3)</sup> |
-debounce | Our custom lodash build. |
-defer | `setTimeout(fn, 0);` | `_.defer(fn);`
-delay | `setTimeout(fn, 2000);` | `_.delay(fn, 2000);`
-each (array) | `array.forEach((val, i) => {})` | `_.each(array, (val, i) => {})`
-each (array) | `for (const val of array) {}` | `_.each(array, fn)`
-each (object) | `for (const [key, val] of Object.entries(obj)) {}` | `_.each(obj, fn)`
-extend (new) | `{...options, prop: 1}` | `_.extend({}, options, {prop: 1})`
-extend (assign) | `Object.assign(json, this.model.toJSON())` | `_.extend(json, this.model.toJSON())`
-filter | `array.filter(checkFn)` | `_.filter(array, checkFn)`
-has (array) | `array.includes(value)` | `_.has(array, value)`
-has (object) | `obj.hasOwnProperty(value)` <sup>[4](#u4)</sup> | `_.has(obj, value)`
-isArray | `Array.isArray(someObj)` | `_.isArray(someObj)`
-isFunction | `typeof fn === "function"` | `_.isFunction(fn)`
-isString | `typeof obj === "string"` | `_.isString(obj)`
-keys | `Object.keys(obj)` | `_.keys(obj)`
-last | `someArray[someArray.length - 1]` <sup>[5](#u5)</sup> | `_.last(someArray)`
-map | `array.map(mapFn)` | `_.map(array, mapFn)`
-max | `Math.max(...array)` | `_.max(array)`
-object | <pre>Object.entries(obj).reduce(<br>(result, [key, val]) => {<br>&nbsp;&nbsp;&nbsp;&nbsp;result[key] = value;<br>&nbsp;&nbsp;&nbsp;&nbsp;return result;<br>})</pre> | <pre>\_.object(\_.map(obj, (val, key) => {<br>&nbsp;&nbsp;&nbsp;&nbsp;return [key, value];<br>})</pre>
-omit (array) | `array.filter(prop => !props.includes(prop))` | `_.omit(array, props)`
-omit (object) | <pre>Object.keys(obj).reduce((result, prop) => {<br>&nbsp;&nbsp;&nbsp;&nbsp;if (!props.includes(prop)) {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;result[prop] = attrs[prop];<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>}, {})</pre> | `_.omit(obj, props)`
-once | `$(...).one("click", ...)` | `$(...).on("click", _.once(...))`
-once | <pre>{<br>&nbsp;&nbsp;&nbsp;&nbsp;method: () => {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if (this._initDone) { return; }<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this._initDone = true;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;...<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>}</pre>| `{ method: _.once(() => { ... }) }`</pre>
-once | <pre>var getResult = () => {<br>&nbsp;&nbsp;&nbsp;&nbsp;let val = $.when(...).then(...);<br>&nbsp;&nbsp;&nbsp;&nbsp;getResult = () => val;<br>&nbsp;&nbsp;&nbsp;&nbsp;return val;<br>};</pre> | <pre>var getResult = _.once(() => {<br>&nbsp;&nbsp;&nbsp;&nbsp;return $.when(...).then(...);<br>});</pre>
-sortBy | `result = result.sort((a, b) => a.prop - b.prop)` | `_.sortBy(result, "prop")`
-sortedIndex | Our custom lodash build. |
-throttle | Our custom lodash build. |
-values | `Object.values(obj)` | `_.values(obj)`
-
-1. To be used when you're creating a function and immediately binding its context to `this`. <b id="u1"></b>
-2. Or use a loop if binding multiple methods. <b id="u2"></b>
-3. No alternative at the moment! If you need it then you should add it to the compiled version of lodash and then update this guide to mention that it now exists! <b id="u3"></b>
-4. While we recommend using `obj.hasOwnProperty(prop)` it is possible that the object could have a method named `hasOwnProperty` that does something else, causing this call to break. The likelihood of this happening is extremely slim - but if you're developing something that you wish to work absolutely everywhere you may want to do something like `Object.prototype.hasOwnProperty.call(obj, prop)`. <b id="u4"></b>
-5. If you don't care about destructively modifying the array, you can also use `someArray.pop()``. <b id="u5"></b>
