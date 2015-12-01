@@ -1,4 +1,4 @@
-# Khan Academy Coding Style Guides
+# Influitive Javascript Coding Style Guides
 
 We implement a style guide for our code with the intention of keeping things readable and consistent. Please do your part on the team to help keep the spirit of this consistency in both your own code, as well as politely pointing out violations in other people's code when doing their code reviews. While code prettiness should never be valued over launching or any user-visible impacting changes to the code, the idea is that maintaining a readable codebase helps things be more maintainable, and in the long run will make it easier to do the real changes that do make user-visible changes.
 
