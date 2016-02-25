@@ -23,8 +23,8 @@ In code reviews, it is common to put in TODOs when a reviewer points out some th
 
 - [JavaScript](/style/javascript.md)
 - [React](/style/react.md)
+- [Redux](/style/redux.md)
 - [CSS](/style/css.md)
-- [Python](/style/python.md)
 - [Java](/style/java.md)
 - [ObjC](https://github.com/Khan/objective-c-style-guide) (hosted separately)
 - [iOS](/style/ios.md)

@@ -248,7 +248,7 @@ variety.
 
 All files and classes should have JSDoc comments.
 
-JSDoc can be parsed by a number of open source tools, and must be well-formed. 
+JSDoc can be parsed by a number of open source tools, and must be well-formed.
 
 Syntax:
 ```js
@@ -269,7 +269,7 @@ compatibility information.  As an example:
  * the profile page.
  *
  * These utilities were not written to be a general purpose utility
- * for the entire code base, but has been optimized with the 
+ * for the entire code base, but has been optimized with the
  * assumption that the Profile namespace is fully loaded.
 
  */
@@ -393,7 +393,7 @@ var c = fn(a, b);
 
 A single var statement is bad because:
 
-* If you forget a comma, you just made a global 
+* If you forget a comma, you just made a global
 * It originated when people wanted to save bytes, but we have a minifier
 * It makes line-based diffs/editing messier
 * It encourages C89-style declarations at the top of scope, preventing
@@ -423,7 +423,7 @@ Yes:
 
 We use commonjs and es6 transpiled to commonjs modules in all our apps.
 
-There are mechanisms for an explicit import/export mechanism rather than 
+There are mechanisms for an explicit import/export mechanism rather than
 using global variables to export functionality.
 
 No:
@@ -466,7 +466,7 @@ module.exports = Jungle;
 Yes:
 ```js
 export function welcome() {
-  // ... 
+  // ...
 }
 
 export function haveFever() {
@@ -517,9 +517,16 @@ use rest params like `(...args) => foo(args)`.
 
 `+` is not forbidden, but backticks are encouraged!
 
-#### Use ES6 classes for React classes
+How to use backticks:
 
-Prefer Higher Order components over mixins.
+```js
+const first_name = `Billy`;
+const last_name = `Bob`;
+const name = `${last_name}, ${first_name}`;
+```
+
+[More details](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals)
+
 
 #### Do not use `async`/`await` or generators
 
@@ -528,15 +535,6 @@ code.
 
 This rule may change once all our supported browsers support ES6
 natively.
-
-#### Do not use `Set` or `Map`
-
-The polyfills for these, though not huge, are large enough it's not
-worth the (small) benefit of using these classes for hashtables
-instead of just using `object`.
-
-This rule may change if strong enough support for these types is
-evinced.
 
 #### Use `let` and `const` for new files; do not use `var`
 
@@ -549,24 +547,18 @@ to replace all uses of `var` in existing files.
 -----------------
 ### Library rules
 
-#### Use `$` for jQuery
-
-We use `$` as the jQuery identifier, as opposed to typing out `jQuery`
-in full.
-
-No:
-```js
-jQuery(".some-class span").hide();
-```
-
-Yes:
-```js
-$(".some-class span").hide();
-```
-
 #### Use Lodash when it makes sense.
 
 When doing simple operations es5/es6 built ins should be preferred in order to keep bundle size down.
 
 However when doing complex operations or working on scripts/serverside code lodash can enable you to write much more performant, readable, and reusable code.
 
+When you need to use lodash, only import the necessary functions:
+
+```js
+import {forEach} from 'lodash';
+
+forEach([1,2,3], (i)=>{
+  console.log(i);
+});
+```

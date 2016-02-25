@@ -219,6 +219,3 @@ network communication.
 
 If possible, re-use existing patternity components. Patternity components
 shouldn't have state associated to them and should be pure functions.
-
-
-###
