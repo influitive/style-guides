@@ -2,12 +2,20 @@
 
 ----
 
-* [Overview](#overview)
+* [Frameworks](#framworks)
 
 
 ----
 
-### Overview
+
+
+### Frameworks
+
+* [redux](https://github.com/reactjs/redux): Obviously. Handles state.
+* [react-redux](https://github.com/reactjs/react-redux): Some helper methods to build container components.
+* [redux-saga](https://github.com/yelouafi/redux-saga): Handles async actions and stories.
+* [redux-devtools-extension](https://chrome.google.com/webstore/detail/redux-devtools/lmhkpmbekcpmknklioeibfkpmmfibljd?hl=en): A chrome plugin to provide useful tools for modifying and monitoring redux state changes.
+* [redux-simple]
 
 
 
