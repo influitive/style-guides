@@ -41,7 +41,7 @@ the actions and components that make up this state aware component.
 The entry file that connects the container component to state and actions. looks
 something like this:
 
-```
+```js
 import React from 'react';
 import { connect } from 'react-redux';
 import todo from './components/todo';
@@ -59,7 +59,7 @@ This directory is entirely for dumb components that don't need to know anything
 about the structure that they are rendering. Ideally, this means that they look
 like this:
 
-```
+```jsx
 import React from 'react';
 
 const todo = ({ text, isComplete }) => (
@@ -81,7 +81,7 @@ that the todo component needs to know the todo structure looks.
 
 Actions contain all the action creators that are used to notify redux reducers of changes to state. They pretty much always look like this:
 
-```
+```js
 export const ADD_TODO = 'ADD_TODO';
 export const addTodo = (todo, userId) => ({
     type: ADD_TODO,
@@ -98,7 +98,7 @@ should be related to the container in which the action is related to.
 You can also use what is called a Thunk, which is basically a function instead of
 an object:
 
-```
+```js
 export const waitAndThenAddTodo = (todo, userId) => {
   return (dispatch, getState) => {
     setTimeout( ()=> {
@@ -118,7 +118,7 @@ Sagas are more complicated async actions that allows your asynchronous code to
 look synchronous. However, they still behave like actions and cannot directly modify
 state. They need to issue actions themselves that will be read by the reducers.
 
-```
+```js
 import { takeLatest } from 'redux-saga';
 import * as actions from './actions';
 import { put } from 'redux-saga/effects';
@@ -142,7 +142,7 @@ method above.)
 
 These are all the reducers responsible for the top level state of this container.
 That means store.getState() would return a state something like this:
-```
+```js
 {
   [container]: {
     ...
@@ -153,7 +153,7 @@ That means store.getState() would return a state something like this:
 What you do with this state is entirely up to you.
 
 Eg:
-```
+```js
 import * as actionTypes from './actions';
 
 export const count = (state = {}, action) => {
