@@ -1,13 +1,10 @@
 ## Redux Style Guide
 
-----
+We have a skeleton project setup to get everyone started [here](https://github.com/influitive/react-redux-boilerplate) which should be used for any new front-end project.
 
-* [Frameworks](#framworks)
+Use the generators provided by that project to generate new domain level objects that can be integrated into the application.
 
-
-----
-
-### Redux
+### Project layout
 
 The general layout of a redux project:
 
@@ -15,12 +12,16 @@ The general layout of a redux project:
 ...[configs]
 main.js
 src
-+-- [container]
++-- [domain]
    +-- index.js
    +-- components
+   +-- action-types.js
    +-- actions.js
    +-- sagas.js
+   +-- sagas.test.js
    +-- reducers.js
+   +-- reducers.test.js
+   +-- selectors.js
 +-- store
    +-- index.js
 +-- app.js
@@ -31,14 +32,14 @@ src
 This file contains pretty much nothing. It will just mount the app component to
 the root node.
 
-#### src/[container]
+#### src/[domain]
 
 These directories are the main composition of your application. They contain all
 the actions and components that make up this state aware component.
 
-##### src/[container]/index.js
+##### src/[domain]/index.js
 
-The entry file that connects the container component to state and actions. looks
+The entry file that connects the domain component to state and actions. looks
 something like this:
 
 ```js
@@ -48,12 +49,12 @@ import todo from './components/todo';
 import * as actions from './actions';
 
 export default connect(
-  ({ count }) => ({ count }),
-  actions
+  mapStateToProps,
+  mapDispatchToProps
 )(Counter);
 ```
 
-##### src/[container]/components
+##### src/[domain]/components
 
 This directory is entirely for dumb components that don't need to know anything
 about the structure that they are rendering. Ideally, this means that they look
@@ -77,27 +78,32 @@ const todo = ({ text, isComplete }) => (
 Note that you could send down a todo object as a single prop but that would imply
 that the todo component needs to know the todo structure looks.
 
-##### src/[container]/actions.js
+##### src/[domain]/action-types.js
+
+The action-types file describes all the constants that describe the actions. The names
+always need to be prefixed with their domain. Actions usually take the form
+of ```[VERB]_[STATUS]``` where the last STATUS section is optional and
+usually represents an event sent asynchronously in response to the action.
+
+
+##### src/[domain]/actions.js
 
 Actions contain all the action creators that are used to notify redux reducers of changes to state. They pretty much always look like this:
 
 ```js
-export const ADD_TODO = 'ADD_TODO';
+import * as actionTypes from './action-types';
+
 export const addTodo = (todo, userId) => ({
-    type: ADD_TODO,
+    type: actionTypes.add,
     todo: todo,
     userId: userId
 });
 ```
 
-The restriction to these actions is that all the types need to be absolutely unique. They usually
-take the form of ```[VERB]_[NOUN]_[STATUS]``` where the last STATUS section is optional and
-usually represents an event sent asynchronously in response to the action. The NOUN
-should be related to the container in which the action is related to.
+
 
 You can also use what is called a Thunk, which is basically a function instead of
 an object:
-
 ```js
 export const waitAndThenAddTodo = (todo, userId) => {
   return (dispatch, getState) => {
@@ -112,7 +118,7 @@ This method would wait 5000 ms and then dispatch the add action. Optionally, you
 can also call `getState` to get the current state of the application.
 
 
-##### src/[container]/sagas.js
+##### src/[domain]/sagas.js
 
 Sagas are more complicated async actions that allows your asynchronous code to
 look synchronous. However, they still behave like actions and cannot directly modify
@@ -138,13 +144,13 @@ Just not that yield works with Promises but not with traditional callback
 APIs, so those would have to be wrapped with a promise (as seen with the ```wait```
 method above.)
 
-##### src/[container]/reducers.js
+##### src/[domain]/reducers.js
 
-These are all the reducers responsible for the top level state of this container.
+These are all the reducers responsible for the top level state of this domain.
 That means store.getState() would return a state something like this:
 ```js
 {
-  [container]: {
+  [domain]: {
     ...
   }
 }
@@ -154,11 +160,11 @@ What you do with this state is entirely up to you.
 
 Eg:
 ```js
-import * as actionTypes from './actions';
+import * as actionTypes from './action-types';
 
 export const count = (state = {}, action) => {
   switch(action.type) {
-    case actionTypes.ADD_TODO:
+    case actionTypes.ADD:
       return {
         text: action.todo,
         userId: action.userId
@@ -185,3 +191,4 @@ Or you could combine multiple multiple reducers using ```combineReducers```
 ### More details
 
 A lot more information on best practices can be found [here](https://medium.com/lexical-labs-engineering/redux-best-practices-64d59775802e#.gkaj1dltp)
+and [here](http://jaysoo.ca/2016/02/28/organizing-redux-application/)
