@@ -1,8 +1,10 @@
 ## Redux Style Guide
 
-We have a skeleton project setup to get everyone started [here](https://github.com/influitive/react-redux-boilerplate) which should be used for any new front-end project.
+We have a skeleton project setup to get everyone started [here](https://github.com/influitive/react-redux-boilerplate) which should be used for any new front-end project. In that project, there is a sample project implemented with these
+styles in mind.
 
 Use the generators provided by that project to generate new domain level objects that can be integrated into the application.
+
 
 ### Project layout
 
@@ -22,8 +24,6 @@ src
    +-- reducers.js
    +-- reducers.test.js
    +-- selectors.js
-+-- store
-   +-- index.js
 +-- app.js
 ```
 
@@ -177,6 +177,10 @@ export const count = (state = {}, action) => {
 
 Or you could combine multiple multiple reducers using ```combineReducers```
 
+#### app.js
+
+This file is responsible for handling the routes and the domains included in the
+app. We've created a whole bunch of utilities to help this along.
 
 
 ### Frameworks
