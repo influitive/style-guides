@@ -1,0 +1,38 @@
+AllCops:
+  UseCache: true
+  MaxFilesInCache: 10000
+  TargetRubyVersion: 2.2
+  Exclude:
+    # This is generated so we shouldn't let it count against us...
+    - 'db/**/*'
+    - 'node_modules/**/*'
+    - '**/*.gemspec'
+    - '**/*.html.erb'
+    - 'bin/**/*'
+
+Rails:
+  Enabled: true
+
+Lint/UnreachableCode:
+  Enabled: true
+
+Style/StringLiterals:
+  Enabled: false
+
+Style/BlockDelimiters:
+  Enabled: false
+
+Style/Documentation:
+  Enabled: false
+
+Style/BracesAroundHashParameters:
+  Enabled: false
+
+Lint/EndAlignment:
+  AlignWith: variable
+
+Style/AlignParameters:
+  EnforcedStyle: with_fixed_indentation
+
+Style/SignalException:
+  EnforcedStyle: semantic

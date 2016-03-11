@@ -16,7 +16,7 @@
 * [React libraries and components](#react-libraries-and-components)
   * [Do not use Backbone models.](#do-not-use-backbone-models)
   * [Minimize use of jQuery.](#minimize-use-of-jquery)
-  * [Reuse standard components.](#reuse-standard-components)
+  * [Use patternity components.](#use-patternity-components)
 
 ----
 
@@ -215,29 +215,7 @@ once.
 You can use `$.ajax` (but no other function, such as `$.post`) for
 network communication.
 
-#### Reuse standard components.
+#### Use Patternity components.
 
-If possible, re-use existing components, especially low-level, pure
-components that emit HTML directly. If you write a new such one, and
-it finds a use in a different project, put it in a shared location
-such as the react.js package.
-
-The standard shared location for useful components that have been
-open sourced is the `react-components.js` package in
-`javascript-packages.json`. This includes components such as these:
-
-* `SetIntervalMixin` - provides a setInterval method so something can be
-  done every x milliseconds
-* `$_` - the i18n wrapper to allow for translating text in React.
-* `TimeAgo` - “five minutes ago”, etc - this replaces $.timeago
-
-Reusable components that have not (yet) been open sourced are in the
-(poorly named) `react.js` package.  This include components such as
-these:
-
-* `KUIButton` - render a Khan Academy styled button.
-* `Modal` - create a modal dialog.
-
-This list is far from complete.
-
-### 
+If possible, re-use existing patternity components. Patternity components
+shouldn't have state associated to them and should be pure functions.
